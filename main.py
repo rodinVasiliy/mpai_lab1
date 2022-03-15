@@ -5,8 +5,9 @@ from skimage.exposure import histogram
 from matplotlib.pyplot import title, tight_layout
 from skimage.io import imread, imsave, imshow, show
 from matplotlib import pyplot as plt
+from skimage import data, exposure, img_as_float
 
-settings = {'read_path': 'C:\\PyCharmProjects\\mpai_lab1\\images\\12_tank.tif',
+settings = {'read_path': 'C:\\Users\\Zver\\PycharmProjects\\mpai_lab1\\images\\12_tank.tif',
             'save_path': 'new.tif'
             }
 
@@ -94,3 +95,67 @@ title('The function element - by - element conversion')
 plt.plot(x, y)
 
 show()
+
+# 3) Equalization
+
+fig = plt.figure(figsize=(25, 10))
+fig.add_subplot(3, 4, 1)
+title('The original image')
+imshow(image)
+
+hist, bins = np.histogram(image.flatten(), 256, [0, 256])
+cumsum = hist.cumsum()
+F = (cumsum - cumsum.min()) / (cumsum.max() - cumsum.min())
+g = (g_max - g_min) * F + g_min
+equalization_image = g[image]
+equalization_image = equalization_image.astype(np.uint8)
+fig.add_subplot(3, 4, 2)
+# self-written = самописной
+title('The self-written equalization image')
+imshow(equalization_image)
+
+standart_equalization_image = exposure.equalize_hist(image)
+fig.add_subplot(3, 4, 3)
+title('Image after standart equalization')
+imshow(standart_equalization_image)
+
+x = np.arange(0, 256, 1)
+
+fig.add_subplot(3, 4, 4)
+title('Graph of the cumulative distribution function of brightness before')
+plt.plot(x, F)
+
+hist, bins = np.histogram(equalization_image.flatten(), 256, [0, 256])
+cumsum1 = hist.cumsum()
+F_after_equalization = (cumsum1 - cumsum1.min()) / (cumsum1.max() - cumsum1.min())
+g_after_equalization = (g_max - g_min) * F + g_min
+fig.add_subplot(3, 4, 4)
+title('Graph of the cumulative distribution function of brightness after')
+plt.plot(x, F_after_equalization)
+
+fig.add_subplot(3, 4, 7)
+title('The histogram of original image')
+hist, bins = histogram(image)
+plt.plot(hist, bins)
+
+fig.add_subplot(3, 4, 8)
+title('The histogram of self-written equalization image')
+hist, bins = histogram(equalization_image)
+plt.plot(hist, bins)
+
+fig.add_subplot(3, 4, 9)
+title('The histogram of standart equalization image')
+hist, bins = histogram(standart_equalization_image)
+plt.plot(hist, bins)
+
+fig.add_subplot(3, 4, 10)
+title('The function element - by - element conversion')
+plt.plot(x, g[x])
+
+plt.tight_layout()
+show()
+
+hist, bins = np.histogram(image.flatten(), 256, [0, 256])
+print(bins)
+print('\n')
+print(hist)
