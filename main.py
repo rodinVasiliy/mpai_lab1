@@ -7,7 +7,7 @@ from skimage.io import imread, imsave, imshow, show
 from matplotlib import pyplot as plt
 from skimage import data, exposure, img_as_float
 
-settings = {'read_path': 'C:\\Users\\Zver\\PycharmProjects\\mpai_lab1\\images\\12_tank.tif',
+settings = {'read_path': 'C:\\Users\\Zver\\PycharmProjects\\mpai_lab1\\images\\test.jpg',
             'save_path': 'new.tif'
             }
 
@@ -90,7 +90,7 @@ plt.plot(bins, hist)
 
 fig.add_subplot(2, 3, 6)
 x = np.sort(image.ravel())
-y = np.sort(threshold_processing_image.ravel())
+y = np.sort(contrasted_image.ravel())
 title('The function element - by - element conversion')
 plt.plot(x, y)
 
@@ -121,7 +121,7 @@ imshow(standart_equalization_image)
 
 x = np.arange(0, 256, 1)
 
-fig.add_subplot(3, 4, 4)
+fig.add_subplot(3, 4, 5)
 title('Graph of the cumulative distribution function of brightness before')
 plt.plot(x, F)
 
@@ -129,24 +129,24 @@ hist, bins = np.histogram(equalization_image.flatten(), 256, [0, 256])
 cumsum1 = hist.cumsum()
 F_after_equalization = (cumsum1 - cumsum1.min()) / (cumsum1.max() - cumsum1.min())
 g_after_equalization = (g_max - g_min) * F + g_min
-fig.add_subplot(3, 4, 4)
+fig.add_subplot(3, 4, 6)
 title('Graph of the cumulative distribution function of brightness after')
 plt.plot(x, F_after_equalization)
 
 fig.add_subplot(3, 4, 7)
 title('The histogram of original image')
 hist, bins = histogram(image)
-plt.plot(hist, bins)
+plt.plot(bins, hist)
 
 fig.add_subplot(3, 4, 8)
 title('The histogram of self-written equalization image')
 hist, bins = histogram(equalization_image)
-plt.plot(hist, bins)
+plt.plot(bins, hist)
 
 fig.add_subplot(3, 4, 9)
 title('The histogram of standart equalization image')
 hist, bins = histogram(standart_equalization_image)
-plt.plot(hist, bins)
+plt.plot(bins, hist)
 
 fig.add_subplot(3, 4, 10)
 title('The function element - by - element conversion')
